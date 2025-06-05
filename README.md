@@ -6,7 +6,7 @@ This repo contains a script to track the CVEs related to vulnerabilities in the 
 By default, it gets the CVEs from the [official CVE-Project Github repo](https://github.com/CVEProject/cvelistV5/).<br/>
 The default installation contains ten test files to test the CVE Tracking with a small number of CVEs (five related to *Apple* and five related to *Microsoft*).
 The behaviour of the script is as follows:<br/>
- 1. Download and extract the current CVEs from the CVEProject repo<br/>
+ 1. Download and extract the current CVEs from the CVE-Project repo<br/>
  2. Extract the relevant CVEs from the folder and products specified in the [config](tracker/tracker_config.json). By default, these are the *Microsoft Windows 10 and 11* and the *Apple iOS and iPadOS* vulnerabilities from the [TEST](https://github.com/S-L1/cve_tracker/tree/3370d2cd89c3317bad885001ffe65b31c98ed5e6/tracker/00%20-%20SourceFiles/cve_list_extracted/cvelistV5-main/cves/TEST/TESTFILES) folder<br/>
  3. Extract only the relevant information from the CVE records. The information is primarily retrieved from the CNA container, but may be extracted from ADP container if it is not available in the CNA container. The information to be extracted are defined in the code as:<br/>
     - CVE ID
@@ -19,7 +19,7 @@ The behaviour of the script is as follows:<br/>
     - Metrics (*containers - cna - affected - cvssV3_1*: version, baseScore, baseSeverity, vectorString, availabilityImpact, integrityImpact, confidentialityImpact, attackComplexity, attackVector)
     - Reference URLs (if any)
  4. Create CSV file containing the new or updated CVEs. This is done only if the respective setting in the config is set. The files will then be stored in the destination folder configured<br/>
- 5. If a Cortex instance is specified and the respective setting is switched on, the CVEs can be integrated as indicators to the respective instance of the PA Cortex XSOAR<br/>
+ 5. If a Cortex instance is specified and the respective setting is switched on, the CVEs can be integrated as indicators to the respective instance of the Palo Alto Cortex XSOAR<br/>
  6. If the setting is switched on in the config, a mail alert with the CVE IDs, the title and the vendor-product-combinations is sent<br/>
 
 This work is licensed under an MIT License.<br/>
