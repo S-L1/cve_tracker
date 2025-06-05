@@ -10,7 +10,7 @@
     },
     "resultfile": {
         "createFile": true,
-        "destinationFolder": "01 - VulnerabiltyFiles"
+        "destinationFolder": "01 - VulnerabilityFiles"
     },
     "mailconfig":{
         "sendMailAlert": false,
