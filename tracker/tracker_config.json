@@ -1,0 +1,29 @@
+{
+    "source": {
+        "provider": "https://github.com/CVEProject/cvelistV5/archive/refs/heads/main.zip",
+        "sourceFolder": "00 - SourceFiles",
+        "cveYears": ["TEST"],
+        "products": [
+            { "Microsoft": ["Windows 10", "Windows 11"] },
+            { "Apple": ["iOS", "iPadOS"] }
+        ]
+    },
+    "resultfile": {
+        "createFile": true,
+        "destinationFolder": "01 - VulnerabiltyFiles"
+    },
+    "mailconfig":{
+        "sendMailAlert": false,
+        "mailServer": "",
+        "senderMailAddress": "",
+        "destinationMailAddress": "",
+        "mailSubject": "[CVE TRACKER] New Vulnerability Update",
+        "placeholderText": "Currently there are no changes to CVEs for the defined products."
+    },
+    "createCVEsInCortex": false,
+    "CortexXSOARAPIConfig": {
+        "host": "",
+        "apiKey": "",
+        "searchField": "value"
+    }
+}
