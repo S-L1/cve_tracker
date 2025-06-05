@@ -9,15 +9,15 @@ The behaviour of the script is as follows:<br/>
  1. Download and extract the current CVEs from the CVEProject repo<br/>
  2. Extract the relevant CVEs from the folder and products specified in the config. By default, these are the *Microsoft Windows 10 and 11* and the *Apple iOS and iPadOS* vulnerabilities from the *TEST* folder<br/>
  3. Extract only the relevant information from the CVE records. The information is primarily retrieved from the CNA container, but may be extracted from ADP container if it is not available in the CNA container. The information to be extracted are defined in the code as:<br/>
- - CVE ID
- - Date Reserved
- - Date Published
- - Date Updated
- - Title
- - Description
- - Vendor-Product-Combinations (*containers - cna - affected - vendor/product*)
- - Metrics (*containers - cna - affected - cvssV3_1*: version, baseScore, baseSeverity, vectorString, availabilityImpact, integrityImpact, confidentialityImpact, attackComplexity, attackVector)
- - Reference URLs (if any)
+    - CVE ID
+    - Date Reserved
+    - Date Published
+    - Date Updated
+    - Title
+    - Description
+    - Vendor-Product-Combinations (*containers - cna - affected - vendor/product*)
+    - Metrics (*containers - cna - affected - cvssV3_1*: version, baseScore, baseSeverity, vectorString, availabilityImpact, integrityImpact, confidentialityImpact, attackComplexity, attackVector)
+    - Reference URLs (if any)
  4. Create CSV file containing the new or updated CVEs. This is done only if the respective setting in the config is set. The files will then be stored in the destination folder configured<br/>
  5. If a Cortex instance is specified and the respective setting is switched on, the CVEs can be integrated as indicators to the respective instance of the PA Cortex XSOAR<br/>
  6. If the setting is switched on in the config, a mail alert with the CVE IDs, the title and the vendor-product-combinations is sent<br/>
