@@ -73,36 +73,36 @@ def collect_cves(directory_name):
                             # check if vendor matches
                             try:
                                 if file_content['containers']['cna']['affected'][i]['vendor'] == key:
-                                    # check if the CVE is new
-                                    for row in past_tracked:
-                                        if not file_content['cveMetadata']['cveId'] in row.split(";")[0]:
-                                            for prd in value:
-                                                # check if any of the products matches
-                                                if prd in file_content['containers']['cna']['affected'][i]['product']:
-                                                    # avoid duplicates
-                                                    for tracked in tracked_cves:
-                                                        if file_content['cveMetadata']['cveId'] == tracked['cveMetadata']['cveId']:
-                                                            break
-                                                    else:
-                                                        tracked_cves.append(file_content)
-                                                    break
-                                        # check if it has been updated since the last entry
-                                        elif strptime(str(file_content['cveMetadata']['dateUpdated']).split(".")[0].replace("T", " "), "%Y-%m-%d %H:%M:%S") > strptime(str(row.split(";")[3]), "%Y-%m-%d %H:%M:%S"):
-                                            for prd in value:
-                                                # check if any of the products matches
-                                                if prd in file_content['containers']['cna']['affected'][i]['product']:
-                                                    # avoid duplicates
-                                                    for tracked in tracked_cves:
-                                                        if file_content['cveMetadata']['cveId'] == tracked['cveMetadata']['cveId']:
-                                                            break
-                                                    else:
-                                                        tracked_cves.append(file_content)
+                                    # check if the CVE is new or has been updated
+                                    consider = False
+                                    if not file_content['cveMetadata']['cveId'] in str(past_tracked):
+                                        # CVE does not appear in the past files
+                                        consider = True
+                                    else:
+                                        # CVE appears in the past files and might need to be updated
+                                        for row in past_tracked:
+                                            curr_cve_update = strptime(str(file_content['cveMetadata']['dateUpdated']).split(".")[0].replace("T", " "), "%Y-%m-%d %H:%M:%S")
+                                            curr_row_update = strptime(str(row.split(";")[3]), "%Y-%m-%d %H:%M:%S")
+                                            if curr_cve_update > curr_row_update:
+                                                consider = True
+                                                break
+                                    # if it was updated or is new
+                                    if consider:
+                                        for prd in value:
+                                            # check if any of the products matches
+                                            if prd in file_content['containers']['cna']['affected'][i]['product']:
+                                                # avoid duplicates
+                                                for tracked in tracked_cves:
+                                                    if file_content['cveMetadata']['cveId'] == tracked['cveMetadata']['cveId']:
                                                         break
+                                                else:
+                                                    tracked_cves.append(file_content)
+                                                break
                             except:
                                 'continue'
                             i += 1
                     except:
-                        'continue'
+                        continue
 
     # return the content of the files
     return tracked_cves
@@ -121,13 +121,8 @@ def built_result_records(cves):
             i += 1
 
         # get metrics
-        def get_metrics(cont, m):
+        def get_metrics(metr, m):
             i= 0
-            if cont == "cna":
-                metr = cve['containers'][cont]['metrics']
-            else:
-                metr = cve['containers'][cont][0]['metrics']
-
             while i < len(metr):
                 # try the assignment as values might not be available for all fields
                 try:
@@ -156,19 +151,23 @@ def built_result_records(cves):
                     vector = "n/a"
 
                 m += str(metr[i]['cvssV3_1']['version']) + "|" + str(metr[i]['cvssV3_1']['baseScore']) + "|" + metr[i]['cvssV3_1']['baseSeverity'] + "|" + metr[i]['cvssV3_1']['vectorString'] + "|" + availability + integrity + confi + attackComplexity + vector + "||"
-                i += 1
+                break
             return m
 
         metrics = ""
+        j = 0
         try:
-            container = "cna"
+            container = cve['containers']['cna']['metrics']
             metrics = get_metrics(container, metrics)
         except:
-            try:
-                container = "adp"
-                metrics = get_metrics(container, metrics)
-            except:
-                metrics += "0|0|UNKNOWN|n/a|n/a|n/a|n/a|n/a|n/a||"
+            while j < len(cve['containers']['adp']):
+                try:
+                    container = cve['containers']['adp'][j]['metrics']
+                    metrics = get_metrics(container, metrics)
+                    break
+                except:
+                    j += 1
+                    continue
 
         # get references
         i= 0
