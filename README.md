@@ -7,7 +7,7 @@ By default, it gets the CVEs from the [official CVE-Project Github repo](https:/
 The default installation contains ten test files to test the CVE Tracking with a small number of CVEs (five related to *Apple* and five related to *Microsoft*).
 The behaviour of the script is as follows:<br/>
  1. Download and extract the current CVEs from the CVEProject repo<br/>
- 2. Extract the relevant CVEs from the folder and products specified in the [config](tracker/tracker_config.json). By default, these are the *Microsoft Windows 10 and 11* and the *Apple iOS and iPadOS* vulnerabilities from the [TEST](tracker/00 - SourceFiles/cve_list_extracted/cvelistV5-main/cves/TEST/TESTFILES) folder<br/>
+ 2. Extract the relevant CVEs from the folder and products specified in the [config](tracker/tracker_config.json). By default, these are the *Microsoft Windows 10 and 11* and the *Apple iOS and iPadOS* vulnerabilities from the [TEST](https://github.com/S-L1/cve_tracker/tree/3370d2cd89c3317bad885001ffe65b31c98ed5e6/tracker/00%20-%20SourceFiles/cve_list_extracted/cvelistV5-main/cves/TEST/TESTFILES) folder<br/>
  3. Extract only the relevant information from the CVE records. The information is primarily retrieved from the CNA container, but may be extracted from ADP container if it is not available in the CNA container. The information to be extracted are defined in the code as:<br/>
     - CVE ID
     - Date Reserved
@@ -28,7 +28,7 @@ This work is licensed under an MIT License.<br/>
 ## Configurations
 
  - `source` `provider`: The source from where the CVE records are downloaded. The CVE files are downloaded as zip folder and extracted by the script. The default setting points to the download link of the [official CVE-Project Github repo](https://github.com/CVEProject/cvelistV5/) and should not be changed unless the CVEs can be downloaded from a different source in the same format
- - `source` `sourceFolder`: The folder name where the downloaded and extracted CVE files are stored. The default folder contains a [TEST](tracker/00 - SourceFiles/cve_list_extracted/cvelistV5-main/cves/TEST/TESTFILES) subfolder which is not part of the official CVE-Project repo, but was created to test the script with a limited number of CVE records
+ - `source` `sourceFolder`: The folder name where the downloaded and extracted CVE files are stored. The default folder contains a [TEST](https://github.com/S-L1/cve_tracker/tree/3370d2cd89c3317bad885001ffe65b31c98ed5e6/tracker/00%20-%20SourceFiles/cve_list_extracted/cvelistV5-main/cves/TEST/TESTFILES) subfolder which is not part of the official CVE-Project repo, but was created to test the script with a limited number of CVE records
  - `source` `cveYears`: The Years which will be considered. Only the CVE files of the respective subfolders will be handled. The default value is *TEST* and should be changed to at least the current year once the script is used in production
  - `source` `products`: A list of Vendor-Product-Combinations that will be tracked. The Vendor is used as key, must be unique and must match the vendor given in the related CVEs. If the CVE record contains any of the products of the respective vendor, the vulnerability is tracked. As per the default configuration, all CVEs are tracked if the vendor is *Microsoft* and any of the products is either *Windows 10* or *Windows 11* or if the vendor is *Apple* and any of the products is either *iOS* or *iPadOS*
  - `resultfile` `createFile`: Defines if a CSV file containing all considered CVEs should be created. This is switched on by default.
