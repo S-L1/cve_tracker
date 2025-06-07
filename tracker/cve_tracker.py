@@ -160,14 +160,17 @@ def built_result_records(cves):
             container = cve['containers']['cna']['metrics']
             metrics = get_metrics(container, metrics)
         except:
-            while j < len(cve['containers']['adp']):
-                try:
-                    container = cve['containers']['adp'][j]['metrics']
-                    metrics = get_metrics(container, metrics)
-                    break
-                except:
-                    j += 1
-                    continue
+            try:
+                while j < len(cve['containers']['adp']):
+                    try:
+                        container = cve['containers']['adp'][j]['metrics']
+                        metrics = get_metrics(container, metrics)
+                        break
+                    except:
+                        j += 1
+                        continue
+            except:
+                'continue without metrics'
 
         # get references
         i= 0
@@ -181,12 +184,12 @@ def built_result_records(cves):
 
         # get title from CNA or ADP container
         try:
-            title = cve['containers']['cna']['title'].replace("\n", "")
+            title = cve['containers']['cna']['title'].replace("\n", "").replace(";", "")
         except:
-            title = cve['containers']['adp'][0]['title'].replace("\n", "")
+            title = cve['containers']['adp'][0]['title'].replace("\n", "").replace(";", "")
 
         # build cve record and add it to the list
-        cve_record = cve['cveMetadata']['cveId'] + ";" + str(cve['cveMetadata']['dateReserved']).split(".")[0].replace("T", " ") +  ";" + str(cve['cveMetadata']['datePublished']).split(".")[0].replace("T", " ") + ";" + str(cve['cveMetadata']['dateUpdated']).split(".")[0].replace("T", " ") + ";" + title + ";" + cve['containers']['cna']['descriptions'][0]['value'].replace("\n", "") + ";" + affected + ";" + metrics + ";" + refs + "\n"
+        cve_record = cve['cveMetadata']['cveId'] + ";" + str(cve['cveMetadata']['dateReserved']).split(".")[0].replace("T", " ") +  ";" + str(cve['cveMetadata']['datePublished']).split(".")[0].replace("T", " ") + ";" + str(cve['cveMetadata']['dateUpdated']).split(".")[0].replace("T", " ") + ";" + title + ";" + cve['containers']['cna']['descriptions'][0]['value'].replace("\n", "").replace(";", ".") + ";" + affected + ";" + metrics + ";" + refs + "\n"
         cve_entries += cve_record
     return cve_entries
 
